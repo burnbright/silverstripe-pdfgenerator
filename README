@@ -1,0 +1,71 @@
+################
+PDFGenerator Module
+################
+
+The PDFGenerator module uses very good Open Source modified source from html2ps and html2pdf version 2.0.43.
+to generate PDFs from SilverStripe templates.
+Warning: it is for php4, but works with php5 too.
+
+Maintainer Contact
+----------------------------------------------
+Jaroslav Stika (Nickname: Pike)
+<Jaroslav.Stika@gmail.com>
+
+Requirements
+-----------------------------------------------
+
+
+Documentation
+-----------------------------------------------
+http://www.tufat.com/s_html2ps_html2pdf.htm
+
+
+Installation Instructions
+-----------------------------------------------
+ 1. Unpack the module's archive into a directory called PDFGenerator.
+ 2. Warning: folder "cache" in "PDFGenerator/code/html2ps_php4/cache" MUST BE WRITABLE (chmod to  755)!
+
+
+Usage Overview
+-----------------------------------------------
+To generate a PDF, you will first need to make an HTML/CSS template that will
+provide the content of the PDF.
+
+In both of these examples, $Rendered is going to be rendered with
+your custom PDFTemplateName.ss.
+
+Use this syntax to send a PDF file to the user.  You could define this as a
+method on a controller, for example
+
+Use this syntax to generate a PDF file from memory.
+
+function PagePdf() {
+	$page_url = Controller::curr()->Link();
+	$page_url = str_replace("/",'', $page_url );
+	$filename = $page_url; // no extension ".pdf"
+	$Rendered = $this;
+	$Rendered = $this->customise( $Rendered )->renderWith( array('Page_print','Page' ) );
+	$pdf = new PDFGenerator();
+	$pdf->setData( $Rendered );
+	$pdf->setName( $filename );
+	$pdf->getPDF(1);
+}
+
+Use this syntax to save a PDF file to a location on the server.
+
+function PagePdf() {
+	$page_url = Controller::curr()->Link();
+	$page_url = str_replace("/",'', $page_url );
+	$filename = $page_url; // no extension ".pdf"
+	$Rendered = $this;
+	$Rendered = $this->customise( $Rendered )->renderWith( array('Page_print','Page' ) );
+	$pdf = new PDFGenerator();
+	$pdf->setData( $Rendered );
+	$pdf->setName( $filename );
+	$pdf->getPDF(2);
+}
+
+
+Known issues:
+-----------------------------------------------
+I don't know. Yes, it's very slow............
